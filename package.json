@@ -4,7 +4,7 @@
   "description": "Nous allons tâcher de créer une API permettant d'effectuer des opérations CRUD sur les pokémons. Ce projet sera réalisé avec Express pour la gestion des routes et avec une base de donnée NoSQL.",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "nodemon src/index.js",
     "db:init": "node db/init.db.js"
   },
   "repository": {
@@ -12,7 +12,7 @@
     "url": "git+https://github.com/vfourny/nodejs-pokedex-api.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Justin Fontaine",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/vfourny/nodejs-pokedex-api/issues"
