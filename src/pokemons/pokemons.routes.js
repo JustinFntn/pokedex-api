@@ -1,22 +1,33 @@
 const express = require("express");
+
 const {
-    getPokemonsController,
-    getPokemonController,
-    addPokemonController,
+    listPokemons,
+    getPokemonById,
+    createPokemon,
+    updatePokemon,
+    deletePokemon,
 } = require(`./pokemons.controller`);
+
 const router = express.Router();
 
 router.get(`/pokemons`, (req, res) => {
-    getPokemonsController(req, res);
+    listPokemons(req, res);
 });
 
 router.get(`/pokemons/:pokemonId`, (req, res) => {
-    getPokemonController(req, res);
+    getPokemonById(req, res);
 });
 
 router.post(`/pokemons`, (req, res) => {
-    console.log(req);
-    addPokemonController(req, res);
+    createPokemon(req, res);
+});
+
+router.patch(`/pokemons/:pokemonId`, (req, res) => {
+    updatePokemon(req, res);
+});
+
+router.delete(`/pokemons/:pokemonId`, (req, res) => {
+    deletePokemon(req, res);
 });
 
 module.exports = router;

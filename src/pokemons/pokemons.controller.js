@@ -1,6 +1,12 @@
-const { getPokemonsModel, getPokemonModel } = require(`./pokemons.model`);
+const {
+    getPokemonsModel,
+    getPokemonModel,
+    addPokemonModel,
+    updatePokemonModel,
+    deletePokemonModel,
+} = require(`./pokemons.model`);
 
-const getPokemonsController = async (_req, res) => {
+const listPokemons = async (_req, res) => {
     try {
         const pokemons = await getPokemonsModel();
         if (pokemons.length === 0) {
@@ -12,7 +18,7 @@ const getPokemonsController = async (_req, res) => {
     }
 };
 
-const getPokemonController = async (req, res) => {
+const getPokemonById = async (req, res) => {
     try {
         const pokemon = await getPokemonModel(req.params.pokemonId);
         if (pokemon.length === 0) {
@@ -24,15 +30,37 @@ const getPokemonController = async (req, res) => {
     }
 };
 
-const addPokemonController = async (req, res) => {
-    try{
-        await addPokemonController(req.body);
-        
+const createPokemon = async (req, res) => {
+    try {
+        await addPokemonModel(req.body);
+        return res.status(200).end(req);
+    } catch (err) {
+        return res.status(500).end();
+    }
+};
+
+const updatePokemon = async (req, res) => {
+    try {
+        await updatePokemonModel(req, res);
+        return res.status(200).end();
+    } catch (err) {
+        return res.status(500).end();
+    }
+};
+
+const deletePokemon = async (req, res) => {
+    try {
+        await deletePokemonModel(req, res);
+        return res.status(200).end();
+    } catch (err) {
+        return res.status(500).end();
     }
 };
 
 module.exports = {
-    getPokemonsController,
-    getPokemonController,
-    addPokemonController,
+    listPokemons,
+    getPokemonById,
+    createPokemon,
+    updatePokemon,
+    deletePokemon,
 };

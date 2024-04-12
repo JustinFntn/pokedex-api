@@ -22,8 +22,50 @@ const getPokemonModel = (id) => {
     });
 };
 
-const addPokemonModel = (id) => {
-    return new Promise((resolve, reject) => {});
+const addPokemonModel = (newPokemon) => {
+    return new Promise((resolve, reject) => {
+        const keys = Object.keys(newPokemon);
+        const values = Object.values(newPokemon);
+
+        const sql = `INSERT INTO pokemons (${keys.join(
+            ", "
+        )}) VALUES (${values.join(", ")})`;
+
+        db.run(sql, (err) => {
+            if (err) {
+                reject(err);
+            }
+            resolve("Pokemon created");
+        });
+    });
 };
 
-module.exports = { getPokemonsModel, getPokemonModel, addPokemonModel };
+const updatePokemonModel = (id) => {
+    return new Promise((resolve, reject) => {
+        if (true) {
+            console.log("modif");
+            resolve("test");
+        } else {
+            reject("false");
+        }
+    });
+};
+
+const deletePokemonModel = (id) => {
+    return new Promise((resolve, reject) => {
+        if (true) {
+            console.log("delete");
+            resolve("test");
+        } else {
+            reject("false");
+        }
+    });
+};
+
+module.exports = {
+    getPokemonsModel,
+    getPokemonModel,
+    addPokemonModel,
+    updatePokemonModel,
+    deletePokemonModel,
+};
