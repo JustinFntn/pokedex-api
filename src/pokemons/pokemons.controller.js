@@ -34,6 +34,21 @@ const getPokemonById = async (req, res) => {
 
 const createPokemon = async (req, res) => {
     try {
+        pokemonsList = await getPokemonsModel();
+        const { nom, pokedexId } = req.body;
+        if (pokemonsList.find((pokemon) => pokemon.nom === nom)) {
+            return res
+                .status(400)
+                .end(`Pokemon with name ${nom} already exists`);
+        }
+
+        if (pokemonsList.find((pokemon) => pokemon.pokedexId === pokedexId)) {
+            return res
+                .status(400)
+                .end(`Pokemon with pokedexId ${pokedexId} already exists`);
+        }
+
+        // vérification de l'existance des évolutions
         const { pre_evolution, post_evolution } = req.body;
         if (pre_evolution) {
             const prePokemon = await getPokemonModel(pre_evolution);
@@ -56,6 +71,7 @@ const createPokemon = async (req, res) => {
             }
         }
 
+        // vérification de l'existance des types
         const { type1_id, type2_id } = req.body;
         if (type1_id) {
             const type = await getTypeModel(type1_id);
@@ -73,10 +89,16 @@ const createPokemon = async (req, res) => {
                     .send(`Type with id ${type2_id} does not exist for type_2`);
             }
         }
+
+        // type identique donc on supprime type2_id
+        if (type1_id === type2_id) {
+            delete req.body.type2_id;
+        }
+
         await addPokemonModel(req.body);
         return res.status(200).end();
     } catch (err) {
-        return res.status(500).end();
+        return res.status(500).end(err.message);
     }
 };
 
@@ -91,10 +113,10 @@ const updatePokemon = async (req, res) => {
 
 const deletePokemon = async (req, res) => {
     try {
-        await deletePokemonModel(req, res);
-        return res.status(200).end();
+        const result = await deletePokemonModel(req.params.pokemonId);
+        return res.status(200).end(result);
     } catch (err) {
-        return res.status(500).end();
+        return res.status(500).end(err.message);
     }
 };
 
@@ -104,4 +126,12 @@ module.exports = {
     createPokemon,
     updatePokemon,
     deletePokemon,
+};
+
+const chekName = async (name) => {
+    try {
+        pokemonsList = await getPokemonsModel();
+    } catch (err) {
+        return;
+    }
 };

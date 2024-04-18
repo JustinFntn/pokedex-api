@@ -11,19 +11,24 @@ const getPokemonsModel = () => {
     });
 };
 
-const getPokemonModel = (id) => {
+const getPokemonModel = (pokedexId) => {
     return new Promise((resolve, reject) => {
-        db.all(`SELECT * FROM pokemons WHERE id = ${id}`, (err, rows) => {
-            if (err) {
-                reject(err);
+        db.all(
+            `SELECT * FROM pokemons WHERE pokedexId = ${pokedexId}`,
+            (err, rows) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(rows);
             }
-            resolve(rows);
-        });
+        );
     });
 };
 
 const addPokemonModel = (newPokemon) => {
     return new Promise((resolve, reject) => {
+        newPokemon.nom = `'${newPokemon.nom}'`;
+
         const keys = Object.keys(newPokemon);
         const values = Object.values(newPokemon);
 
@@ -51,14 +56,14 @@ const updatePokemonModel = (id) => {
     });
 };
 
-const deletePokemonModel = (id) => {
+const deletePokemonModel = (pokedexId) => {
     return new Promise((resolve, reject) => {
-        if (true) {
-            console.log("delete");
-            resolve("test");
-        } else {
-            reject("false");
-        }
+        db.run(`DELETE FROM pokemons WHERE pokedexId=${pokedexId}`, (err) => {
+            if (err) {
+                reject(err);
+            }
+            resolve("Pokemon deleted");
+        });
     });
 };
 
