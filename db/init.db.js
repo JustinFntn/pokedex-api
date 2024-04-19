@@ -45,3 +45,11 @@ db.run(
             REFERENCES pokemons (id)
     )`
 );
+
+db.run(
+    `CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY,
+        email TEXT NOT NULL UNIQUE,
+        password TEXT NOT NULL 
+    )`
+);

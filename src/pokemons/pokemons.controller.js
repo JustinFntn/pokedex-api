@@ -104,10 +104,10 @@ const createPokemon = async (req, res) => {
 
 const updatePokemon = async (req, res) => {
     try {
-        await updatePokemonModel(req, res);
+        await updatePokemonModel(req);
         return res.status(200).end();
     } catch (err) {
-        return res.status(500).end();
+        return res.status(500).end(err.message);
     }
 };
 

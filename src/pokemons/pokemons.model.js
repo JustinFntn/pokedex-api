@@ -45,14 +45,30 @@ const addPokemonModel = (newPokemon) => {
     });
 };
 
-const updatePokemonModel = (id) => {
+const updatePokemonModel = (req) => {
     return new Promise((resolve, reject) => {
-        if (true) {
-            console.log("modif");
-            resolve("test");
-        } else {
-            reject("false");
-        }
+        const pokedexId = req.params.pokemonId;
+        let updatePokemon = req.body;
+
+        updatePokemon.nom = `'${updatePokemon.nom}'`;
+
+        const keys = Object.keys(updatePokemon);
+        const values = Object.values(updatePokemon);
+
+        const setValues = keys
+            .map((key, index) => {
+                return `${key} = ${values[index]}`;
+            })
+            .join(", ");
+
+        const sql = `UPDATE pokemons SET ${setValues} WHERE pokedexId = ${pokedexId}`;
+
+        db.run(sql, (err) => {
+            if (err) {
+                reject(err);
+            }
+            resolve("Pokemon updated");
+        });
     });
 };
 
