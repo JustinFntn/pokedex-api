@@ -12,19 +12,6 @@ const { verifyJWT } = require(`../common/jwt.middleware`);
 
 const router = express.Router();
 
-/**
- * @openapi
- * /pokemons:
- *  get:
- *    tag:
- *     - pokemons
- *      description: Get all pokemons
- *      responses:
- *          200:
- *              description: Success
- *          500:
- *              description: Internal Server Error
- */
 router.get(`/pokemons`, (req, res) => {
     listPokemons(req, res);
 });

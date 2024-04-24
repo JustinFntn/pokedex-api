@@ -1,0 +1,224 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Pokemon API",
+        "description": "API permettant d'effectuer des opérations CRUD sur les pokémons. API réalisée dans le cadre d'un enseigenement",
+        "version": "1.0.0",
+        "contact": {
+            "name": "Justin FONTAINE",
+            "email": "justin.fontaine@etu.univ-littoral.fr"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000",
+            "description": "Serveur local"
+        }
+    ],
+    "components": {
+        "securitySchemas": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
+    "paths": {
+        "/types": {
+            "get": {
+                "tags": [
+                    "Types"
+                ],
+                "summary": "Récupérer la liste des types",
+                "responses": {
+                    "200": {
+                        "description": "Liste des types",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/types/{id}": {
+            "get": {
+                "tags": [
+                    "Types"
+                ],
+                "summary": "Récupérer un type par son id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Id du type recherché",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "JSON array contenant le type recherché",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Type non trouvé"
+                    }
+                }
+            }
+        },
+        "/pokemons": {
+            "get": {
+                "tags": [
+                    "Pokémons"
+                ],
+                "summary": "Récupérer la liste des pokémons",
+                "responses": {
+                    "200": {
+                        "description": "Liste des pokémons",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pokemons/{id}": {
+            "get": {
+                "tags": [
+                    "Pokémons"
+                ],
+                "summary": "Récupérer un pokémon par son id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Id du pokémon recherché",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pokémon trouvé",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pokémon non trouvé"
+                    }
+                }
+            }
+        },
+        "/users": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Créer un utilisateur",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Utilisateur créé"
+                    },
+                    "400": {
+                        "description": "Requête invalide"
+                    }
+                }
+            }
+        },
+        "/users/login": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Se connecter",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Connexion réussie",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Connexion échouée"
+                    }
+                }
+            }
+        }
+    }
+}
