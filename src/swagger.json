@@ -156,9 +156,16 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Pokémons"
+                ],
+                "summary": "Créer un pokemon",
+                "requestBody": {}
             }
         },
-        "/pokemons/{id}": {
+        "/pokemons/{pokedexId}": {
             "get": {
                 "tags": [
                     "Pokémons"
@@ -166,7 +173,7 @@
                 "summary": "Récupérer un pokémon par son id",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "pokedexId",
                         "in": "path",
                         "required": true,
                         "description": "Id du pokémon recherché",
