@@ -18,7 +18,7 @@
             }
         },
         "schemas": {
-            "Types": {
+            "Type": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -30,11 +30,20 @@
                         "type": "string",
                         "example": "plante"
                     }
+                },
+                "example": {
+                    "id": 3,
+                    "name": "plante"
                 }
             },
-            "Pokemons": {
+            "Pokemon": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
                     "nom": {
                         "type": "string",
                         "example": "Bulbizarre"
@@ -62,6 +71,57 @@
                         "example": 2,
                         "nullable": true
                     }
+                },
+                "required": [
+                    "nom",
+                    "pokedexId",
+                    "type1_id"
+                ],
+                "example": {
+                    "id": 1,
+                    "nom": "Bulbizarre",
+                    "pokedexId": 1,
+                    "type1_id": 3,
+                    "type2_id": 4,
+                    "post_evolution": 2
+                }
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "exemple@test.fr"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "hashed password",
+                        "example": "password"
+                    }
+                },
+                "example": {
+                    "id": 1,
+                    "email": "sacha@pokemon.fr",
+                    "password": "pikachu"
+                }
+            }
+        },
+        "parameters": {
+            "pokedexId": {
+                "name": "pokedexId",
+                "in": "path",
+                "required": true,
+                "description": "Id du pokémon",
+                "schema": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "format": "int64"
                 }
             }
         }
@@ -86,7 +146,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Types"
+                                        "$ref": "#/components/schemas/Type"
                                     }
                                 }
                             }
@@ -117,8 +177,7 @@
                             "type": "integer",
                             "minimum": 1,
                             "format": "int64"
-                        },
-                        "example": 1
+                        }
                     }
                 ],
                 "responses": {
@@ -127,13 +186,17 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object"
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Type"
                                 }
                             }
                         }
                     },
                     "404": {
                         "description": "Type non trouvé"
+                    },
+                    "500": {
+                        "description": "Erreur serveur"
                     }
                 }
             }
@@ -150,10 +213,19 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array"
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Pokemon"
+                                    }
                                 }
                             }
                         }
+                    },
+                    "204": {
+                        "description": "Aucun pokémon à retourner"
+                    },
+                    "500": {
+                        "description": "Erreur serveur"
                     }
                 }
             },
@@ -162,7 +234,17 @@
                     "Pokémons"
                 ],
                 "summary": "Créer un pokemon",
-                "requestBody": {}
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/Pokemon"
+                            }
+                        }
+                    }
+                }
             }
         },
         "/pokemons/{pokedexId}": {
@@ -173,15 +255,7 @@
                 "summary": "Récupérer un pokémon par son id",
                 "parameters": [
                     {
-                        "name": "pokedexId",
-                        "in": "path",
-                        "required": true,
-                        "description": "Id du pokémon recherché",
-                        "schema": {
-                            "type": "integer",
-                            "minimum": 1,
-                            "format": "int64"
-                        }
+                        "$ref": "#/components/parameters/pokedexId"
                     }
                 ],
                 "responses": {
@@ -190,7 +264,8 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object"
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Pokemon"
                                 }
                             }
                         }
@@ -199,6 +274,28 @@
                         "description": "Pokémon non trouvé"
                     }
                 }
+            },
+            "patch": {
+                "tags": [
+                    "Pokémons"
+                ],
+                "summary": "Modifier un pokémon par son numero de pokedex",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/pokedexId"
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Pokémons"
+                ],
+                "summary": "Supprimer un pokémon par son numero de pokedex",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/pokedexId"
+                    }
+                ]
             }
         },
         "/users": {
@@ -211,15 +308,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "username": {
-                                        "type": "string"
-                                    },
-                                    "password": {
-                                        "type": "string"
-                                    }
-                                }
+                                "$ref": "#/components/schemas/User"
                             }
                         }
                     }
