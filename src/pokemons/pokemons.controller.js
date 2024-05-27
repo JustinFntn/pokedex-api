@@ -12,11 +12,11 @@ const listPokemons = async (_req, res) => {
     try {
         const pokemons = await getPokemonsModel();
         if (pokemons.length === 0) {
-            return res.status(204).send(pokemons);
+            return res.status(204).end();
         }
         return res.status(200).send(pokemons);
     } catch (err) {
-        return res.status(500).end(err.message);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 };
 
@@ -24,11 +24,11 @@ const getPokemonById = async (req, res) => {
     try {
         const pokemon = await getPokemonModel(req.params.pokemonId);
         if (pokemon.length === 0) {
-            return res.status(204).send(pokemon);
+            return res.status(204).send();
         }
         return res.status(200).send(pokemon);
     } catch (err) {
-        return res.status(500).end(err.message);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 };
 
@@ -74,7 +74,7 @@ const createPokemon = async (req, res) => {
         await addPokemonModel(req.body);
         return res.status(200).end();
     } catch (err) {
-        return res.status(500).end(err.message);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 };
 
@@ -92,16 +92,23 @@ const updatePokemon = async (req, res) => {
         pokemonsList = await getPokemonsModel();
 
         // vérification de l'existance du pokemon
-        if (pokemonsList.find((pokemon) => pokemon.nom === nom)) {
+        if (
+            pokemonsList.some((pokemon) => {
+                return (
+                    pokemon.nom === nom &&
+                    pokemon.pokedexId !== Number(req.params.pokemonId)
+                );
+            })
+        ) {
             return res
                 .status(400)
-                .end(`Pokemon with name ${nom} already exists`);
+                .send(`Pokemon with name ${nom} already exists`);
         }
 
         if (pokemonsList.find((pokemon) => pokemon.pokedexId === pokedexId)) {
             return res
                 .status(400)
-                .end(`Pokemon with pokedexId ${pokedexId} already exists`);
+                .send(`Pokemon with pokedexId ${pokedexId} already exists`);
         }
 
         // vérification de l'existance des évolutions
@@ -120,7 +127,7 @@ const updatePokemon = async (req, res) => {
         await updatePokemonModel(req);
         return res.status(200).end();
     } catch (err) {
-        return res.status(500).end(err.message);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 };
 
@@ -133,10 +140,12 @@ const deletePokemon = async (req, res) => {
         } else {
             return res
                 .status(400)
-                .send(`Pokemon with id ${req.params.pokemonId} does not exist`);
+                .send(
+                    `Pokemon with pokedexId ${req.params.pokemonId} does not exist`
+                );
         }
     } catch (err) {
-        return res.status(500).end(err.message);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 };
 

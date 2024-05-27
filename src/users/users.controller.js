@@ -14,7 +14,7 @@ const createUser = async (req, res) => {
             return res.status(400).send("Email is not valid");
         }
     } catch (err) {
-        return res.status(500).end(err.message);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 };
 
@@ -26,7 +26,6 @@ const loginUser = async (req, res) => {
         }
         if (await brcypt.compare(req.body.password, User.password)) {
             return res.status(200).send({
-                email: User.email,
                 token: jwt.sign({ email: User.email }, "voldemort", {
                     expiresIn: "1h",
                 }),
@@ -34,7 +33,7 @@ const loginUser = async (req, res) => {
         }
         return res.status(401).send("Wrong password");
     } catch (err) {
-        return res.status(500).end(err.message);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 };
 

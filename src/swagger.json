@@ -9,6 +9,25 @@
             "email": "justin.fontaine@etu.univ-littoral.fr"
         }
     },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Types",
+            "description": "Opérations sur les types de pokémons"
+        },
+        {
+            "name": "Pokémons",
+            "description": "Opérations sur les pokémons"
+        },
+        {
+            "name": "Users",
+            "description": "Opérations sur les utilisateurs"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
     "components": {
         "securitySchemas": {
             "bearerAuth": {
@@ -39,11 +58,6 @@
             "Pokemon": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "format": "int64",
-                        "example": 1
-                    },
                     "nom": {
                         "type": "string",
                         "example": "Bulbizarre"
@@ -78,7 +92,6 @@
                     "type1_id"
                 ],
                 "example": {
-                    "id": 1,
                     "nom": "Bulbizarre",
                     "pokedexId": 1,
                     "type1_id": 3,
@@ -89,11 +102,6 @@
             "User": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "format": "int64",
-                        "example": 1
-                    },
                     "email": {
                         "type": "string",
                         "format": "email",
@@ -106,7 +114,6 @@
                     }
                 },
                 "example": {
-                    "id": 1,
                     "email": "sacha@pokemon.fr",
                     "password": "pikachu"
                 }
@@ -156,7 +163,20 @@
                         "description": "Aucun type à retourner"
                     },
                     "500": {
-                        "description": "Erreur serveur"
+                        "description": "Erreur serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal Server Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -192,11 +212,24 @@
                             }
                         }
                     },
-                    "404": {
-                        "description": "Type non trouvé"
+                    "204": {
+                        "description": "Aucun type à retourner"
                     },
                     "500": {
-                        "description": "Erreur serveur"
+                        "description": "Erreur serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal Server Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -225,7 +258,20 @@
                         "description": "Aucun pokémon à retourner"
                     },
                     "500": {
-                        "description": "Erreur serveur"
+                        "description": "Erreur serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal Server Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -284,7 +330,18 @@
                     {
                         "$ref": "#/components/parameters/pokedexId"
                     }
-                ]
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/Pokemon"
+                            }
+                        }
+                    }
+                }
             },
             "delete": {
                 "tags": [
@@ -319,6 +376,22 @@
                     },
                     "400": {
                         "description": "Requête invalide"
+                    },
+                    "500": {
+                        "description": "Erreur serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal Server Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -364,6 +437,22 @@
                     },
                     "401": {
                         "description": "Connexion échouée"
+                    },
+                    "500": {
+                        "description": "Erreur serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal Server Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
