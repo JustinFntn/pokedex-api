@@ -417,10 +417,26 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Utilisateur créé"
+                        "description": "Utilisateur créé",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "User created"
+                                }
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Requête invalide"
+                        "description": "Requête invalide",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Email is not valid"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Erreur serveur",
@@ -481,7 +497,26 @@
                         }
                     },
                     "401": {
-                        "description": "Connexion échouée"
+                        "description": "Connexion échouée",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Wrong password"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Utilisateur non trouvé",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "User not found"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Erreur serveur",
