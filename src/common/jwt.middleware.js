@@ -7,7 +7,7 @@ const verifyJWT = (req, res, next) => {
         const decodedToken = jwt.verify(token, "voldemort");
         next();
     } catch (err) {
-        return res.status(401).send(err.message);
+        return res.status(401).send("Unauthorized");
     }
 };
 

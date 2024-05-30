@@ -29,7 +29,7 @@
         "http"
     ],
     "components": {
-        "securitySchemas": {
+        "securitySchemes": {
             "bearerAuth": {
                 "type": "http",
                 "scheme": "bearer",
@@ -133,11 +133,6 @@
             }
         }
     },
-    "security": [
-        {
-            "bearerAuth": []
-        }
-    ],
     "paths": {
         "/types": {
             "get": {
@@ -276,6 +271,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Pokémons"
                 ],
@@ -287,6 +287,41 @@
                             "schema": {
                                 "type": "object",
                                 "$ref": "#/components/schemas/Pokemon"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Pokémon créé",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Pokémon créé"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Requête invalide"
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    },
+                    "500": {
+                        "description": "Erreur serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal Server Error"
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -326,6 +361,11 @@
                     "Pokémons"
                 ],
                 "summary": "Modifier un pokémon par son numero de pokedex",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/pokedexId"
@@ -348,6 +388,11 @@
                     "Pokémons"
                 ],
                 "summary": "Supprimer un pokémon par son numero de pokedex",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/pokedexId"
@@ -371,7 +416,7 @@
                     }
                 },
                 "responses": {
-                    "201": {
+                    "200": {
                         "description": "Utilisateur créé"
                     },
                     "400": {
@@ -408,7 +453,7 @@
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "username": {
+                                    "email": {
                                         "type": "string"
                                     },
                                     "password": {

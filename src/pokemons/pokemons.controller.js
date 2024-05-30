@@ -72,7 +72,7 @@ const createPokemon = async (req, res) => {
         }
 
         await addPokemonModel(req.body);
-        return res.status(200).end();
+        return res.status(200).send("Pokemon created");
     } catch (err) {
         return res.status(500).json({ error: "Internal Server Error" });
     }
