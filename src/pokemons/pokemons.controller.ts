@@ -1,14 +1,14 @@
-const {
+import {
     getPokemonsModel,
     getPokemonModel,
     addPokemonModel,
     updatePokemonModel,
     deletePokemonModel,
-} = require(`./pokemons.model`);
+} from "./pokemons.model";
 
-const { getTypeModel } = require(`../types/types.model`);
+import { getTypeModel } from "@types/types.model";
 
-const listPokemons = async (_req, res) => {
+const listPokemons = async (req: any, res: any) => {
     try {
         const pokemons = await getPokemonsModel();
         if (pokemons.length === 0) {
@@ -20,7 +20,7 @@ const listPokemons = async (_req, res) => {
     }
 };
 
-const getPokemonById = async (req, res) => {
+const getPokemonById = async (req: any, res: any) => {
     try {
         const pokemon = await getPokemonModel(req.params.pokemonId);
         if (pokemon.length === 0) {
@@ -32,7 +32,7 @@ const getPokemonById = async (req, res) => {
     }
 };
 
-const createPokemon = async (req, res) => {
+const createPokemon = async (req: any, res: any) => {
     try {
         // Variabls pour les verifications
         const {
@@ -78,7 +78,7 @@ const createPokemon = async (req, res) => {
     }
 };
 
-const updatePokemon = async (req, res) => {
+const updatePokemon = async (req: any, res: any) => {
     try {
         // Variabls pour les verifications
         const {
@@ -131,7 +131,7 @@ const updatePokemon = async (req, res) => {
     }
 };
 
-const deletePokemon = async (req, res) => {
+const deletePokemon = async (req: any, res: any) => {
     try {
         const pokemon = await getPokemonModel(req.params.pokemonId);
         if (pokemon.length >= 0) {

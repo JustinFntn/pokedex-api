@@ -1,9 +1,8 @@
-const express = require("express");
-const { db } = require("./db");
+import express from "express";
 
 // swagger documentation
-const swaggerUi = require("swagger-ui-express");
-const swaggerJson = require("./swagger.json");
+import swaggerUi from "swagger-ui-express";
+import swaggerJson from "./swagger.json";
 
 // routes
 const typesRouter = require("./types/types.routes");

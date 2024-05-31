@@ -1,4 +1,4 @@
-const { db } = require(`../db`);
+import db from "../db";
 
 const getPokemonsModel = () => {
     return new Promise((resolve, reject) => {
@@ -11,7 +11,7 @@ const getPokemonsModel = () => {
     });
 };
 
-const getPokemonModel = (pokedexId) => {
+const getPokemonModel = (pokedexId: number) => {
     return new Promise((resolve, reject) => {
         db.all(
             `SELECT * FROM pokemons WHERE pokedexId = ${pokedexId}`,
@@ -25,14 +25,14 @@ const getPokemonModel = (pokedexId) => {
     });
 };
 
-const addPokemonModel = (newPokemon) => {
+const addPokemonModel = (newPokemon: any) => {
     return new Promise((resolve, reject) => {
         newPokemon.nom = `'${newPokemon.nom}'`;
 
-        const keys = Object.keys(newPokemon);
-        const values = Object.values(newPokemon);
+        const keys: string[] = Object.keys(newPokemon);
+        const values: unknown[] = Object.values(newPokemon);
 
-        const sql = `INSERT INTO pokemons (${keys.join(
+        const sql: string = `INSERT INTO pokemons (${keys.join(
             ", "
         )}) VALUES (${values.join(", ")})`;
 
@@ -45,17 +45,17 @@ const addPokemonModel = (newPokemon) => {
     });
 };
 
-const updatePokemonModel = (req) => {
+const updatePokemonModel = (req: any) => {
     return new Promise((resolve, reject) => {
-        const pokedexId = req.params.pokemonId;
-        let updatePokemon = req.body;
+        const pokedexId: number = req.params.pokemonId;
+        let updatePokemon: any = req.body;
 
         updatePokemon.nom = `'${updatePokemon.nom}'`;
 
-        const keys = Object.keys(updatePokemon);
-        const values = Object.values(updatePokemon);
+        const keys: string[] = Object.keys(updatePokemon);
+        const values: unknown[] = Object.values(updatePokemon);
 
-        const setValues = keys
+        const setValues: string = keys
             .map((key, index) => {
                 return `${key} = ${values[index]}`;
             })
@@ -72,7 +72,7 @@ const updatePokemonModel = (req) => {
     });
 };
 
-const deletePokemonModel = (pokedexId) => {
+const deletePokemonModel = (pokedexId: number) => {
     return new Promise((resolve, reject) => {
         db.run(`DELETE FROM pokemons WHERE pokedexId=${pokedexId}`, (err) => {
             if (err) {
@@ -83,7 +83,7 @@ const deletePokemonModel = (pokedexId) => {
     });
 };
 
-module.exports = {
+export {
     getPokemonsModel,
     getPokemonModel,
     addPokemonModel,

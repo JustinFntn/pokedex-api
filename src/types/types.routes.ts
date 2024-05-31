@@ -1,5 +1,5 @@
-const express = require("express");
-const { getTypesController, getTypeController } = require(`./types.controller`);
+import express from "express";
+import { getTypesController, getTypeController } from "@types/types.model";
 
 const router = express.Router();
 
