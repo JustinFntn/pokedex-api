@@ -1,6 +1,6 @@
 import db from "src/db";
 
-const getTypesModel = (): Promise<any[]> => {
+function getTypesModel(): Promise<any[]> {
     return new Promise((resolve, reject) => {
         db.all(`SELECT * FROM types`, (err, rows) => {
             if (err) {
@@ -9,7 +9,7 @@ const getTypesModel = (): Promise<any[]> => {
             resolve(rows);
         });
     });
-};
+}
 
 const getTypeModel = (id: number): Promise<any> => {
     return new Promise((resolve, reject) => {

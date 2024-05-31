@@ -1,5 +1,5 @@
 import express from "express";
-import { getTypesController, getTypeController } from "@types/types.model";
+import { getTypesController, getTypeController } from "src/type/types.model";
 
 const router = express.Router();
 

@@ -4,9 +4,9 @@ import {
     addPokemonModel,
     updatePokemonModel,
     deletePokemonModel,
-} from "./pokemons.model";
+} from "@pokemons/pokemons.model";
 
-import { getTypeModel } from "@types/types.model";
+import { getTypeModel } from "@type/types.model";
 
 const listPokemons = async (req: any, res: any) => {
     try {
