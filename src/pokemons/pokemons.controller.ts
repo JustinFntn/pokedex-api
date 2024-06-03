@@ -1,16 +1,17 @@
-const {
+import {
+    Pokemon,
     getPokemonsModel,
     getPokemonModel,
     addPokemonModel,
     updatePokemonModel,
     deletePokemonModel,
-} = require(`./pokemons.model`);
+} from "./pokemons.model";
 
-const { getTypeModel } = require(`../types/types.model`);
+import { Type, getTypeModel } from "../type/types.model";
 
-const listPokemons = async (_req, res) => {
+const listPokemons = async (req: any, res: any) => {
     try {
-        const pokemons = await getPokemonsModel();
+        const pokemons: Pokemon[] = await getPokemonsModel();
         if (pokemons.length === 0) {
             return res.status(204).end();
         }
@@ -20,9 +21,9 @@ const listPokemons = async (_req, res) => {
     }
 };
 
-const getPokemonById = async (req, res) => {
+const getPokemonById = async (req: any, res: any) => {
     try {
-        const pokemon = await getPokemonModel(req.params.pokemonId);
+        const pokemon: any = await getPokemonModel(req.params.pokemonId);
         if (pokemon.length === 0) {
             return res.status(204).send();
         }
@@ -32,7 +33,7 @@ const getPokemonById = async (req, res) => {
     }
 };
 
-const createPokemon = async (req, res) => {
+const createPokemon = async (req: any, res: any) => {
     try {
         // Variabls pour les verifications
         const {
@@ -43,16 +44,20 @@ const createPokemon = async (req, res) => {
             type1_id,
             type2_id,
         } = req.body;
-        pokemonsList = await getPokemonsModel();
+        const pokemonsList: Pokemon[] = await getPokemonsModel();
 
         // vérification de l'existance du pokemon
-        if (pokemonsList.some((pokemon) => pokemon.nom === nom)) {
+        if (pokemonsList.some((pokemon: Pokemon) => pokemon.nom === nom)) {
             return res
                 .status(400)
                 .end(`Pokemon with name ${nom} already exists`);
         }
 
-        if (pokemonsList.some((pokemon) => pokemon.pokedexId === pokedexId)) {
+        if (
+            pokemonsList.some(
+                (pokemon: Pokemon) => pokemon.pokedexId === pokedexId
+            )
+        ) {
             return res
                 .status(400)
                 .end(`Pokemon with pokedexId ${pokedexId} already exists`);
@@ -78,7 +83,7 @@ const createPokemon = async (req, res) => {
     }
 };
 
-const updatePokemon = async (req, res) => {
+const updatePokemon = async (req: any, res: any) => {
     try {
         // Variabls pour les verifications
         const {
@@ -89,11 +94,11 @@ const updatePokemon = async (req, res) => {
             type1_id,
             type2_id,
         } = req.body;
-        pokemonsList = await getPokemonsModel();
+        const pokemonsList: Pokemon[] = await getPokemonsModel();
 
         // vérification de l'existance du pokemon
         if (
-            pokemonsList.some((pokemon) => {
+            pokemonsList.some((pokemon: Pokemon) => {
                 return (
                     pokemon.nom === nom &&
                     pokemon.pokedexId !== Number(req.params.pokemonId)
@@ -105,7 +110,11 @@ const updatePokemon = async (req, res) => {
                 .send(`Pokemon with name ${nom} already exists`);
         }
 
-        if (pokemonsList.find((pokemon) => pokemon.pokedexId === pokedexId)) {
+        if (
+            pokemonsList.find(
+                (pokemon: Pokemon) => pokemon.pokedexId === pokedexId
+            )
+        ) {
             return res
                 .status(400)
                 .send(`Pokemon with pokedexId ${pokedexId} already exists`);
@@ -131,11 +140,15 @@ const updatePokemon = async (req, res) => {
     }
 };
 
-const deletePokemon = async (req, res) => {
+const deletePokemon = async (req: any, res: any) => {
     try {
-        const pokemon = await getPokemonModel(req.params.pokemonId);
-        if (pokemon.length >= 0) {
-            const result = await deletePokemonModel(req.params.pokemonId);
+        const pokemon: Pokemon | undefined = await getPokemonModel(
+            req.params.pokemonId
+        );
+        if (pokemon) {
+            const result: string = await deletePokemonModel(
+                req.params.pokemonId
+            );
             return res.status(200).end(result);
         } else {
             return res
@@ -149,10 +162,14 @@ const deletePokemon = async (req, res) => {
     }
 };
 
-const validatePokemonEvolution = async (evolutionId, res, evolutionType) => {
+const validatePokemonEvolution = async (
+    evolutionId: number,
+    res: any,
+    evolutionType: string
+) => {
     if (evolutionId !== undefined) {
-        const pokemon = await getPokemonModel(evolutionId);
-        if (pokemon.length === 0) {
+        const pokemon: Pokemon | undefined = await getPokemonModel(evolutionId);
+        if (pokemon === undefined) {
             throw new Error(
                 `Pokemon with id ${evolutionId} does not exist for ${evolutionType}`
             );
@@ -160,10 +177,14 @@ const validatePokemonEvolution = async (evolutionId, res, evolutionType) => {
     }
 };
 
-const validatePokemonType = async (typeId, res, typeType) => {
+const validatePokemonType = async (
+    typeId: number,
+    res: any,
+    typeType: string
+) => {
     if (typeId !== undefined) {
-        const type = await getTypeModel(typeId);
-        if (type.length === 0) {
+        const type: Type | undefined = await getTypeModel(typeId);
+        if (type === undefined) {
             throw new Error(
                 `Type with id ${typeId} does not exist for ${typeType}`
             );
@@ -171,7 +192,7 @@ const validatePokemonType = async (typeId, res, typeType) => {
     }
 };
 
-module.exports = {
+export {
     listPokemons,
     getPokemonById,
     createPokemon,
