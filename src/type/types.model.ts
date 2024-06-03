@@ -1,8 +1,13 @@
-import db from "src/db";
+import db from "../db";
 
-function getTypesModel(): Promise<any[]> {
+export interface Type {
+    id: number;
+    label: string;
+}
+
+function getTypesModel(): Promise<Type[]> {
     return new Promise((resolve, reject) => {
-        db.all(`SELECT * FROM types`, (err, rows) => {
+        db.all(`SELECT * FROM types`, (err, rows: Type[]) => {
             if (err) {
                 reject(err);
             }
@@ -11,14 +16,17 @@ function getTypesModel(): Promise<any[]> {
     });
 }
 
-const getTypeModel = (id: number): Promise<any> => {
+const getTypeModel = (id: number): Promise<Type | undefined> => {
     return new Promise((resolve, reject) => {
-        db.all(`SELECT * FROM types WHERE id = ${id}`, (err, rows) => {
-            if (err) {
-                reject(err);
+        db.get(
+            `SELECT * FROM types WHERE id = ${id}`,
+            (err, row: Type | undefined) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(row);
             }
-            resolve(rows);
-        });
+        );
     });
 };
 

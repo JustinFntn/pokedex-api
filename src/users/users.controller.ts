@@ -1,10 +1,10 @@
-const brcypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const validator = require("validator");
+import brcypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import validator from "validator";
 
-const { createUserModel, getUserModel } = require(`./users.model`);
+import { User, createUserModel, getUserModel } from "./users.model";
 
-const createUser = async (req, res) => {
+const createUser = async (req: any, res: any) => {
     try {
         if (validator.isEmail(req.body.email)) {
             req.body.password = await brcypt.hash(req.body.password, 10);
@@ -18,10 +18,10 @@ const createUser = async (req, res) => {
     }
 };
 
-const loginUser = async (req, res) => {
+const loginUser = async (req: any, res: any) => {
     try {
-        const User = await getUserModel(req.body.email);
-        if (!User) {
+        const User: User | undefined = await getUserModel(req.body.email);
+        if (User === undefined) {
             return res.status(404).send("User not found");
         }
         if (await brcypt.compare(req.body.password, User.password)) {
@@ -37,4 +37,4 @@ const loginUser = async (req, res) => {
     }
 };
 
-module.exports = { createUser, loginUser };
+export { createUser, loginUser };

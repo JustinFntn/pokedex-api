@@ -5,13 +5,13 @@ import swaggerUi from "swagger-ui-express";
 import swaggerJson from "./swagger.json";
 
 // routes
-const typesRouter = require("./types/types.routes");
-const pokemonsRouter = require("./pokemons/pokemons.routes");
-const usersRouter = require("./users/users.routes");
+import { router as typesRouter } from "./type/types.routes";
+import { router as pokemonsRouter } from "./pokemons/pokemons.routes";
+import { router as usersRouter } from "./users/users.routes";
 
 //
-const app = express();
-const port = 3000;
+const app: express.Application = express();
+const port: number = 3000;
 
 app.use(express.json());
 app.use(typesRouter);

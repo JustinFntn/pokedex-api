@@ -1,16 +1,16 @@
-import Express from "express";
+import Express, { Router } from "express";
 
-const {
+import {
     listPokemons,
     getPokemonById,
     createPokemon,
     updatePokemon,
     deletePokemon,
-} = require(`./pokemons.controller`);
+} from "./pokemons.controller";
 
-const { verifyJWT } = require(`../common/jwt.middleware`);
+import { verifyJWT } from "../common/jwt.middleware";
 
-const router = Express.Router();
+const router: Router = Express.Router();
 
 router.get(`/pokemons`, (req: any, res: any) => {
     listPokemons(req, res);
@@ -32,4 +32,4 @@ router.delete(`/pokemons/:pokemonId`, verifyJWT, (req: any, res: any) => {
     deletePokemon(req, res);
 });
 
-module.exports = router;
+export { router };

@@ -1,8 +1,8 @@
-const { getTypesModel, getTypeModel } = require(`./types.model`);
+import { Type, getTypesModel, getTypeModel } from "./types.model";
 
-const getTypesController = async (req, res) => {
+const getTypesController = async (req: any, res: any) => {
     try {
-        const types = await getTypesModel();
+        const types: Type[] = await getTypesModel();
         if (types.length === 0) {
             return res.status(204).end();
         }
@@ -12,10 +12,10 @@ const getTypesController = async (req, res) => {
     }
 };
 
-const getTypeController = async (req, res) => {
+const getTypeController = async (req: any, res: any) => {
     try {
-        const type = await getTypeModel(req.params.typeId);
-        if (type.length === 0) {
+        const type: Type | undefined = await getTypeModel(req.params.typeId);
+        if (type === undefined) {
             return res.status(204).end();
         }
         return res.status(200).send(type);
@@ -24,4 +24,4 @@ const getTypeController = async (req, res) => {
     }
 };
 
-module.exports = { getTypesController, getTypeController };
+export { getTypesController, getTypeController };

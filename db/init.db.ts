@@ -1,4 +1,4 @@
-const { db } = require("../src/db.js");
+import db from "../src/db";
 
 // Crée la table des types et l'alimente si elle est vide
 db.run("CREATE TABLE IF NOT EXISTS types (id INTEGER PRIMARY KEY, label TEXT)");

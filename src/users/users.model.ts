@@ -1,6 +1,11 @@
-const { db } = require(`../db`);
+import db from "../db";
 
-const createUserModel = (newUser) => {
+export interface User {
+    email: string;
+    password: string;
+}
+
+const createUserModel = (newUser: User): Promise<string> => {
     return new Promise((resolve, reject) => {
         newUser.email = `'${newUser.email}'`;
         newUser.password = `'${newUser.password}'`;
@@ -21,15 +26,18 @@ const createUserModel = (newUser) => {
     });
 };
 
-const getUserModel = (email) => {
+const getUserModel = (email: string): Promise<User | undefined> => {
     return new Promise((resolve, reject) => {
-        db.get(`SELECT * FROM users WHERE email = '${email}'`, (err, row) => {
-            if (err) {
-                reject(err);
+        db.get(
+            `SELECT * FROM users WHERE email = '${email}'`,
+            (err, row: User | undefined) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(row);
             }
-            resolve(row);
-        });
+        );
     });
 };
 
-module.exports = { createUserModel, getUserModel };
+export { createUserModel, getUserModel };
